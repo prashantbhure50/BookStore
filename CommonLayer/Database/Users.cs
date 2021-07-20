@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CommonLayer.Database
 {
-    class User
+    public class Users
     {
         public int UserId { get; set; }
         public string FirstName { get; set; }

@@ -1,10 +1,13 @@
-﻿using System;
+﻿using CommonLayer.Database;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace BusinessLayer.Interface
 {
-    interface IUserBL
+    public interface IUserBL
     {
+        Users AddUser(Users user);
+        //string Login(string email, string password);
     }
 }
