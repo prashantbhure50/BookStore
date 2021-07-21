@@ -31,6 +31,7 @@ namespace Bookstore
         {
             //services.AddSingleton<INlog, Nlog>();
             services.AddControllers();
+            services.AddSingleton<IConfiguration>(Configuration);
             services.AddTransient<IUserBL, UserBL>();
             services.AddTransient<IUserRL, UserRL>();
         }

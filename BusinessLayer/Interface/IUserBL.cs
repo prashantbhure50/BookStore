@@ -7,7 +7,7 @@ namespace BusinessLayer.Interface
 {
     public interface IUserBL
     {
-        Users AddUser(Users user);
+        bool AddUser(Users user);
         //string Login(string email, string password);
     }
 }
