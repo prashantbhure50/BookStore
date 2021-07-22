@@ -19,9 +19,9 @@ namespace BusinessLayer.Service
            return this.userRl.AddUser(user);
         }
 
-        //public string Login(string email, string password)
-        //{
-        //    return this.userRl.Login(email, password);
-        //}
+        public string Login(string email, string password)
+        {
+            return this.userRl.Login(email, password);
+        }
     }
 }

@@ -1,9 +1,12 @@
 ﻿using CommonLayer.Database;
+using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Interface;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace RepositoryLayer.Service
@@ -11,7 +14,7 @@ namespace RepositoryLayer.Service
     public class UserRL : IUserRL
     {
         public static string connectionString = @"Data Source=(localdb)\ProjectsV13;Initial Catalog=Bookstore;Integrated Security=True";
-        //static string connectionString = ConfigurationManager.ConnectionStrings["Bookstore"].ConnectionString;
+        //public static string connectionString = ConfigurationManager.ConnectionStrings["Bookstore"].ConnectionString;
         SqlConnection connection = new SqlConnection(connectionString);
         public bool AddUser(Users model)
         {
@@ -49,5 +52,45 @@ namespace RepositoryLayer.Service
             }
             return false;
         }
+        public string Login(string email, string password)
+        {
+            var result = "";
+            this.connection.Open();
+            using (this.connection)
+            {
+                string query = @"Select * from RegisterUser;";
+               
+                else
+                {
+                    System.Console.WriteLine("No data found");
+                }
+
+
+            }
+            if (result == email)
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var tokenKey = Encoding.ASCII.GetBytes("HelloThisTokenIsGeneretedByMe");
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                   new Claim("Email",email),
+                        //new Claim("UserID",result.UserId.ToString()),
+
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                return tokenHandler.WriteToken(token);
+            }
+            else
+            {
+                return null;
+            }
+            
+        }
+
     }
 }

@@ -8,6 +8,6 @@ namespace RepositoryLayer.Interface
    public interface IUserRL
     {
         bool AddUser(Users user);
-        //string Login(string email, string password);
+        string Login(string email, string password);
     }
 }
