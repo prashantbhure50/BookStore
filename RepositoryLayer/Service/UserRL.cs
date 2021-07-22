@@ -17,6 +17,7 @@ namespace RepositoryLayer.Service
         {
             try
             {
+                this.connection.Open();
                 using (this.connection)
                 {
                     SqlCommand command = new SqlCommand("Register", this.connection);
@@ -26,7 +27,8 @@ namespace RepositoryLayer.Service
                     command.Parameters.AddWithValue("@Email", model.Email);
                     command.Parameters.AddWithValue("@Password", model.Password);
                     command.Parameters.AddWithValue("@PhoneNo", model.PhoneNo);
-                    this.connection.Open();
+                    command.Parameters.AddWithValue("@role", "Customer");
+
                     var result = command.ExecuteNonQuery();
                     this.connection.Close();
                     if (result != 0)
