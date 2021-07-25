@@ -81,19 +81,7 @@ namespace RepositoryLayer.Service
                 string query = @"Select * from RegisterUser;";
                 SqlCommand cmd = new SqlCommand(query, this.connection);
                 SqlDataReader dr = cmd.ExecuteReader();
-                if (dr.HasRows)
-                {
-                    while (dr.Read())
-                    {
-                        result = dr.GetString(3);
-                        string Pass = dr.GetString(4);
-
-                    }
-                }
-                else
-                {
-                    System.Console.WriteLine("No data found");
-                }
+              
 
 
             }
