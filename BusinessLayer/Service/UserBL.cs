@@ -23,5 +23,9 @@ namespace BusinessLayer.Service
         {
             return this.userRl.Login(email, password);
         }
+        public bool ForgotPassword(string email)
+        {
+            return this.userRl.ForgotPassword(email);
+        }
     }
 }

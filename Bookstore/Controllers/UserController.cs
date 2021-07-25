@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer.Database;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,12 +27,12 @@ namespace Bookstore.Controllers
                 this.userBl.AddUser(user);
                 return this.Ok(new { success = true, message = "Registration Successful " });
             }
-
             catch (Exception e)
             {
                 return this.BadRequest(new { success = false, message = e.Message });
             }
         }
+
         [HttpPost("login")]
         public IActionResult LoginUser(LoginModle loginModel)
         {
@@ -47,6 +48,28 @@ namespace Bookstore.Controllers
             {
               
                 return this.BadRequest(new { success = false, message = e.Message });
+            }
+        }
+
+
+        [HttpPost("forgotpassword")]
+        public ActionResult ForgotPassword(LoginModle loginModel)
+        {
+            try
+            {
+                bool isExist = this.userBl.ForgotPassword(loginModel.Email);
+                if (isExist)
+                {
+                    return Ok(new { success = true, message = $"Reset Link sent to {loginModel.Email}" });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = $"No user Exist with {loginModel.Email}" });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
     }

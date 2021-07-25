@@ -34,6 +34,8 @@ namespace Bookstore
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddTransient<IUserBL, UserBL>();
             services.AddTransient<IUserRL, UserRL>();
+            services.AddTransient<IBookRL, BookRL>();
+            services.AddTransient<IBookBL, BookBL>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
