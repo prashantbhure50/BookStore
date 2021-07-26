@@ -6,6 +6,7 @@ namespace CommonLayer.Database
 {
    public class CartModle
    {
+        public int CartID { get; set; }
         public int UserID { get; set; }
         public string BookName { get; set; }
         public string BookQuantity { get; set; }
