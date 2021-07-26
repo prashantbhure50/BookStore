@@ -1,4 +1,5 @@
 ﻿using CommonLayer.Database;
+using Experimental.System.Messaging;
 using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Interface;
 using System;
@@ -81,18 +82,29 @@ namespace RepositoryLayer.Service
                 string query = @"Select * from RegisterUser;";
                 SqlCommand cmd = new SqlCommand(query, this.connection);
                 SqlDataReader dr = cmd.ExecuteReader();
-              
+                if (dr.HasRows)
+                {
+                    while (dr.Read())
+                    {
+                        result = dr.GetString(3);
+                        string Pass = dr.GetString(4);
+                        if (result == email)
+                        {
+                            return GenerateToken(email);
+                        }
+
+                    }
+                }
+                else
+                {
+                    System.Console.WriteLine("No data found");
+                }
 
 
             }
-            if (result == email)
-            {
-               return GenerateToken(email);
-            }
-            else
-            {
+           
                 return null;
-            }
+            
             
         }
 
@@ -119,6 +131,15 @@ namespace RepositoryLayer.Service
 
 
             }
+            MessageQueue queue;
+            if (MessageQueue.Exists(@".\Private$\BookstoreQueue"))
+            {
+                queue = new MessageQueue(@".\Private$\BookstoreQueue");
+            }
+            else
+            {
+                queue = MessageQueue.Create(@".\Private$\BookstoreQueue");
+            }
             if (result == email)
             {
                 using (SmtpClient client = new SmtpClient("smtp.gmail.com", 587))
@@ -131,7 +152,7 @@ namespace RepositoryLayer.Service
 
                     MailMessage msgObj = new MailMessage();
                     msgObj.To.Add(email);
-                    msgObj.From = new MailAddress("Alokbhure7@gmail.com");
+                    msgObj.From = new MailAddress(email);
                     msgObj.Subject = "Password Reset Link";
                     msgObj.Body = GenerateToken(email);
                     client.Send(msgObj);

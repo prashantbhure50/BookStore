@@ -31,6 +31,7 @@ namespace Bookstore
         {
             //services.AddSingleton<INlog, Nlog>();
             services.AddControllers();
+            services.AddSwaggerGen();
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddTransient<IUserBL, UserBL>();
             services.AddTransient<IUserRL, UserRL>();
@@ -41,6 +42,13 @@ namespace Bookstore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookStore-API ");
+                
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
