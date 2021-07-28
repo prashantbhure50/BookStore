@@ -7,24 +7,23 @@ using System.Text;
 
 namespace RepositoryLayer.Service
 {
-   public class BookRL: IBookRL
+   public class WishListRL: IWishListRL
     {
         public static string connectionString = @"Data Source=(localdb)\ProjectsV13;Initial Catalog=Bookstore;Integrated Security=True";
         SqlConnection connection = new SqlConnection(connectionString);
-        public bool AddBooks(Books model)
+        public bool AddToWishList(WishListModle model)
         {
             try
             {
                 this.connection.Open();
                 using (this.connection)
                 {
-                    SqlCommand command = new SqlCommand("Book", this.connection);
+                    SqlCommand command = new SqlCommand("AddToWishList", this.connection);
                     command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@CartID", model.CartID);
+                    command.Parameters.AddWithValue("@UserID", model.UserID);
                     command.Parameters.AddWithValue("@BookName", model.BookName);
-                    command.Parameters.AddWithValue("@BookAurthor", model.BookAurthor);
-                    command.Parameters.AddWithValue("@BookCategory", model.BookCategory);
-                    command.Parameters.AddWithValue("@BookLanguage", model.BookLanguage);
-                    command.Parameters.AddWithValue("@BookQuantity", model.BookQuantity);
+                    command.Parameters.AddWithValue("@BookPrice", model.BookPrice);
                     var result = command.ExecuteNonQuery();
                     this.connection.Close();
                     if (result != 0)
@@ -44,54 +43,17 @@ namespace RepositoryLayer.Service
             }
             return false;
         }
-        public void GetAllBooks()
+        public bool RemoveFromWishList(WishListModle id)
         {
             try
             {
-                Books book = new Books();
-                using (this.connection)
-                {
-                    string query = @"Select * from Books;";
-                    SqlCommand cmd = new SqlCommand(query, this.connection);
-                    this.connection.Open();
-                    SqlDataReader dr = cmd.ExecuteReader();
-                    if (dr.HasRows)
-                    {
-                        while (dr.Read())
-                        {
-                            book.BookName = dr.GetString(1);
-                            book.BookAurthor = dr.GetString(2);
-                            book.BookCategory = dr.GetString(3);
-                            book.BookLanguage = dr.GetString(4);
-                           
-                        }
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("No data found");
-                    }
 
-                }
-              
-            }
-            catch (Exception e)
-            {
-                System.Console.WriteLine(e.Message);
-            }
-         
-        }
-
-        public bool DeleteBook(Books id)
-        {
-            try
-            {
-               
                 this.connection.Open();
                 using (this.connection)
                 {
-                    SqlCommand command = new SqlCommand("Delete", this.connection);
+                    SqlCommand command = new SqlCommand("RemoveWishList", this.connection);
                     command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@BookID", id.BookID);
+                    command.Parameters.AddWithValue("@CartID", id.CartID);
                     var result = command.ExecuteNonQuery();
                     this.connection.Close();
                     if (result != 0)
@@ -111,8 +73,7 @@ namespace RepositoryLayer.Service
             }
             return false;
         }
-
-        public bool UpdateBook(Books modle)
+        public bool UpdateWishList(WishListModle modle)
         {
             try
             {
@@ -120,13 +81,10 @@ namespace RepositoryLayer.Service
                 this.connection.Open();
                 using (this.connection)
                 {
-                    SqlCommand command = new SqlCommand("Update", this.connection);
+                    SqlCommand command = new SqlCommand("UpdateWishList", this.connection);
                     command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@BookID", modle.BookID);
+                    command.Parameters.AddWithValue("@CartID", modle.CartID);
                     command.Parameters.AddWithValue("@BookName", modle.BookName);
-                    command.Parameters.AddWithValue("@BookAurthor", modle.BookAurthor);
-                    command.Parameters.AddWithValue("@BookCategory", modle.BookCategory);
-                    command.Parameters.AddWithValue("@BookLanguage", modle.BookLanguage);
                     var result = command.ExecuteNonQuery();
                     this.connection.Close();
                     if (result != 0)
@@ -146,6 +104,5 @@ namespace RepositoryLayer.Service
             }
             return false;
         }
-
     }
 }

@@ -20,7 +20,8 @@ namespace RepositoryLayer.Service
                 {
                     SqlCommand command = new SqlCommand("AddToCart", this.connection);
                     command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@BookName", model.BookName);
+                    command.Parameters.AddWithValue("@CartID", model.CartID);
+                    command.Parameters.AddWithValue("@UserID", model.UserID);
                     command.Parameters.AddWithValue("@BookQuantity", model.BookQuantity);
                     command.Parameters.AddWithValue("@BookPrice", model.BookPrice);
                     var result = command.ExecuteNonQuery();

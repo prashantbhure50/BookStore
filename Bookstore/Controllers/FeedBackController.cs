@@ -1,8 +1,8 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer.Database;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RepositoryLayer.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,21 +12,20 @@ namespace Bookstore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors]
-    public class CartController : ControllerBase
+    public class FeedBackController : ControllerBase
     {
-        ICartBL cartBl;
-        public CartController(ICartBL cartBl)
+        IFeedBackBL feedBackBL;
+        public FeedBackController(IFeedBackBL feedBackBL)
         {
-            this.cartBl = cartBl;
+            this.feedBackBL = feedBackBL;
         }
         [HttpPost]
-        public ActionResult AddToCart(CartModle cart)
+        public ActionResult AddFeedBack(FeedBackModle modle)
         {
             try
             {
-                this.cartBl.AddToCart(cart);
-                return this.Ok(new { success = true, message = "Books Added To Cart Successful " });
+                this.feedBackBL.AddFeedBack(modle);
+                return this.Ok(new { success = true, message = "FeedBack Added Successful " });
             }
 
             catch (Exception e)
@@ -34,27 +33,26 @@ namespace Bookstore.Controllers
                 return this.BadRequest(new { success = false, message = e.Message });
             }
         }
-       
-        [HttpDelete("Deletecart")]
-        public IActionResult DeleteFromCart(CartModle id)
+        [HttpDelete("DeleteFeedBack")]
+        public IActionResult DeleteFeedBack(FeedBackModle id)
         {
             try
             {
-                this.cartBl.DeleteFromCart(id);
-                return Ok(new { success = true, message = "Books Deleted From Cart" });
+                this.feedBackBL.DeleteFeedBack(id);
+                return Ok(new { success = true, message = "FeedBack Deleted Table" });
             }
             catch (Exception e)
             {
                 return BadRequest(new { success = false, message = "Book Is Not In List" });
             }
         }
-        [HttpPut("UpdateCart")]
-        public ActionResult UpdateCart(CartModle cart)
+        [HttpPut("UpdateFeedBack")]
+        public ActionResult UpdateFeedBack(FeedBackModle modle)
         {
             try
             {
-                this.cartBl.UpdateCart(cart);
-                return Ok(new { success = true, message = "Cart Updates Successfully " });
+                this.feedBackBL.UpdateFeedBack(modle);
+                return Ok(new { success = true, message = "FeedBack Updated Successfully " });
 
             }
             catch (Exception e)

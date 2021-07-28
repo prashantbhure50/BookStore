@@ -32,7 +32,7 @@ namespace Bookstore.Controllers
             {
                 return this.BadRequest(new { success = false, message = e.Message });
             }
-        }
+          }
         [HttpGet("GetAllBooks")]
         public ActionResult GetAllBooks()
         {

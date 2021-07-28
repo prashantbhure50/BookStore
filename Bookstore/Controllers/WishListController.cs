@@ -1,6 +1,5 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer.Database;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,21 +11,20 @@ namespace Bookstore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors]
-    public class CartController : ControllerBase
+    public class WishListController : ControllerBase
     {
-        ICartBL cartBl;
-        public CartController(ICartBL cartBl)
+        IWishListBL wishListBl;
+        public WishListController(IWishListBL wishListBl)
         {
-            this.cartBl = cartBl;
+            this.wishListBl = wishListBl;
         }
         [HttpPost]
-        public ActionResult AddToCart(CartModle cart)
+        public ActionResult AddToWishList(WishListModle modle)
         {
             try
             {
-                this.cartBl.AddToCart(cart);
-                return this.Ok(new { success = true, message = "Books Added To Cart Successful " });
+                this.wishListBl.AddToWishList(modle);
+                return this.Ok(new { success = true, message = "Books Added To WishList Successful " });
             }
 
             catch (Exception e)
@@ -34,27 +32,26 @@ namespace Bookstore.Controllers
                 return this.BadRequest(new { success = false, message = e.Message });
             }
         }
-       
-        [HttpDelete("Deletecart")]
-        public IActionResult DeleteFromCart(CartModle id)
+        [HttpDelete("RemoveWishList")]
+        public IActionResult RemoveFromWishList(WishListModle id)
         {
             try
             {
-                this.cartBl.DeleteFromCart(id);
-                return Ok(new { success = true, message = "Books Deleted From Cart" });
+                this.wishListBl.RemoveFromWishList(id);
+                return Ok(new { success = true, message = "Books Deleted From Order Table" });
             }
             catch (Exception e)
             {
                 return BadRequest(new { success = false, message = "Book Is Not In List" });
             }
         }
-        [HttpPut("UpdateCart")]
-        public ActionResult UpdateCart(CartModle cart)
+        [HttpPut("UpdateWishList")]
+        public ActionResult UpdateWishList(WishListModle modle)
         {
             try
             {
-                this.cartBl.UpdateCart(cart);
-                return Ok(new { success = true, message = "Cart Updates Successfully " });
+                this.wishListBl.UpdateWishList(modle);
+                return Ok(new { success = true, message = "WishList Updated Successfully " });
 
             }
             catch (Exception e)

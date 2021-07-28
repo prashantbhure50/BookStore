@@ -1,6 +1,5 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer.Database;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,21 +11,21 @@ namespace Bookstore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors]
-    public class CartController : ControllerBase
+    public class OrderController : ControllerBase
     {
-        ICartBL cartBl;
-        public CartController(ICartBL cartBl)
+        IOrderBL orderBl;
+        public OrderController(IOrderBL orderBl)
         {
-            this.cartBl = cartBl;
+            this.orderBl = orderBl;
         }
+
         [HttpPost]
-        public ActionResult AddToCart(CartModle cart)
+        public ActionResult AddToOrder(OrderModle order)
         {
             try
             {
-                this.cartBl.AddToCart(cart);
-                return this.Ok(new { success = true, message = "Books Added To Cart Successful " });
+                this.orderBl.AddToOrder(order);
+                return this.Ok(new { success = true, message = "Books Added To Order Table Successful " });
             }
 
             catch (Exception e)
@@ -34,27 +33,26 @@ namespace Bookstore.Controllers
                 return this.BadRequest(new { success = false, message = e.Message });
             }
         }
-       
-        [HttpDelete("Deletecart")]
-        public IActionResult DeleteFromCart(CartModle id)
+        [HttpDelete("DeleteOrder")]
+        public IActionResult DeleteOrder(OrderModle id)
         {
             try
             {
-                this.cartBl.DeleteFromCart(id);
-                return Ok(new { success = true, message = "Books Deleted From Cart" });
+                this.orderBl.DeleteOrder(id);
+                return Ok(new { success = true, message = "Books Deleted From Order Table" });
             }
             catch (Exception e)
             {
                 return BadRequest(new { success = false, message = "Book Is Not In List" });
             }
         }
-        [HttpPut("UpdateCart")]
-        public ActionResult UpdateCart(CartModle cart)
+        [HttpPut("UpdateOrder")]
+        public ActionResult UpdateOrder(OrderModle order)
         {
             try
             {
-                this.cartBl.UpdateCart(cart);
-                return Ok(new { success = true, message = "Cart Updates Successfully " });
+                this.orderBl.UpdateOrder(order);
+                return Ok(new { success = true, message = "Order Updated Successfully " });
 
             }
             catch (Exception e)

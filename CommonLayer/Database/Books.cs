@@ -11,6 +11,7 @@ namespace CommonLayer.Database
         public string BookAurthor { get; set; }
         public string BookCategory { get; set; }
         public string BookLanguage { get; set; }
+        public int BookQuantity { get; set; }
 
         public static void ToList()
         {

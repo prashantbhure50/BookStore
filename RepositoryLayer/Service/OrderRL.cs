@@ -7,91 +7,76 @@ using System.Text;
 
 namespace RepositoryLayer.Service
 {
-   public class BookRL: IBookRL
+    public class OrderRL: IOrderRL
     {
         public static string connectionString = @"Data Source=(localdb)\ProjectsV13;Initial Catalog=Bookstore;Integrated Security=True";
         SqlConnection connection = new SqlConnection(connectionString);
-        public bool AddBooks(Books model)
+
+        public bool AddToOrder(OrderModle model)
         {
             try
             {
+                int res = 0;
+                bool final = false;
                 this.connection.Open();
                 using (this.connection)
                 {
-                    SqlCommand command = new SqlCommand("Book", this.connection);
+                    SqlCommand command = new SqlCommand("AddToOrder", this.connection);
                     command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@UserID", model.UserID);
                     command.Parameters.AddWithValue("@BookName", model.BookName);
-                    command.Parameters.AddWithValue("@BookAurthor", model.BookAurthor);
-                    command.Parameters.AddWithValue("@BookCategory", model.BookCategory);
-                    command.Parameters.AddWithValue("@BookLanguage", model.BookLanguage);
                     command.Parameters.AddWithValue("@BookQuantity", model.BookQuantity);
-                    var result = command.ExecuteNonQuery();
-                    this.connection.Close();
-                    if (result != 0)
-                    {
-                        return true;
-                    }
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            finally
-            {
-                this.connection.Close();
-            }
-            return false;
-        }
-        public void GetAllBooks()
-        {
-            try
-            {
-                Books book = new Books();
-                using (this.connection)
-                {
+                    command.Parameters.AddWithValue("@BookPrice", model.BookPrice);
+                  
                     string query = @"Select * from Books;";
                     SqlCommand cmd = new SqlCommand(query, this.connection);
-                    this.connection.Open();
                     SqlDataReader dr = cmd.ExecuteReader();
                     if (dr.HasRows)
                     {
                         while (dr.Read())
                         {
-                            book.BookName = dr.GetString(1);
-                            book.BookAurthor = dr.GetString(2);
-                            book.BookCategory = dr.GetString(3);
-                            book.BookLanguage = dr.GetString(4);
-                           
+                            res = dr.GetInt32(5);
+                     
+                            if (res <= model.BookQuantity)
+                            {
+                                return false;
+                            }
+
                         }
                     }
                     else
                     {
                         System.Console.WriteLine("No data found");
                     }
-
+                    this.connection.Close();
+                    this.connection.Open();
+                    var result = command.ExecuteNonQuery();
+        
+            
+                    return false;
                 }
-              
             }
             catch (Exception e)
             {
-                System.Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message);
             }
-         
+            finally
+            {
+                this.connection.Close();
+            }
+            return false;
         }
-
-        public bool DeleteBook(Books id)
+        public bool DeleteOrder(OrderModle id)
         {
             try
             {
-               
+
                 this.connection.Open();
                 using (this.connection)
                 {
-                    SqlCommand command = new SqlCommand("Delete", this.connection);
+                    SqlCommand command = new SqlCommand("DeleteOrder", this.connection);
                     command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@BookID", id.BookID);
+                    command.Parameters.AddWithValue("@OrderID", id.OrderID);
                     var result = command.ExecuteNonQuery();
                     this.connection.Close();
                     if (result != 0)
@@ -111,8 +96,7 @@ namespace RepositoryLayer.Service
             }
             return false;
         }
-
-        public bool UpdateBook(Books modle)
+        public bool UpdateOrder(OrderModle modle)
         {
             try
             {
@@ -120,13 +104,10 @@ namespace RepositoryLayer.Service
                 this.connection.Open();
                 using (this.connection)
                 {
-                    SqlCommand command = new SqlCommand("Update", this.connection);
+                    SqlCommand command = new SqlCommand("UpdateOrder", this.connection);
                     command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@BookID", modle.BookID);
-                    command.Parameters.AddWithValue("@BookName", modle.BookName);
-                    command.Parameters.AddWithValue("@BookAurthor", modle.BookAurthor);
-                    command.Parameters.AddWithValue("@BookCategory", modle.BookCategory);
-                    command.Parameters.AddWithValue("@BookLanguage", modle.BookLanguage);
+                    command.Parameters.AddWithValue("@OrderID", modle.OrderID);
+                    command.Parameters.AddWithValue("@BookQuantity", modle.BookQuantity);
                     var result = command.ExecuteNonQuery();
                     this.connection.Close();
                     if (result != 0)
@@ -146,6 +127,5 @@ namespace RepositoryLayer.Service
             }
             return false;
         }
-
     }
 }

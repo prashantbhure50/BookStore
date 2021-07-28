@@ -31,6 +31,15 @@ namespace Bookstore
         {
             //services.AddSingleton<INlog, Nlog>();
             services.AddControllers();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AnyOrigin", builder =>
+                {
+                    builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod();
+                });
+            });
             services.AddSwaggerGen();
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddTransient<IUserBL, UserBL>();
@@ -39,6 +48,12 @@ namespace Bookstore
             services.AddTransient<IBookBL, BookBL>();
             services.AddTransient<ICartRL, CartRL>();
             services.AddTransient<ICartBL, CartBL>();
+            services.AddTransient<IOrderRL, OrderRL>();
+            services.AddTransient<IOrderBL, OrderBL>();
+            services.AddTransient<IWishListRL, WishListRL>();
+            services.AddTransient<IWishListBL, WishListBL>();
+            services.AddTransient<IFeedBackRL, FeedBackRL>();
+            services.AddTransient<IFeedBackBL, FeedBackBL>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +74,7 @@ namespace Bookstore
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("AnyOrigin");
 
             app.UseAuthorization();
 
