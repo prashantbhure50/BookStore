@@ -104,6 +104,45 @@ namespace RepositoryLayer.Service
             }
             return false;
         }
+        public IEnumerable<CartModle> GetCart()
+        {
+            List<CartModle> cart = new List<CartModle>();
+            try
+            {
+                using (this.connection)
+                {
+                    string query = @"Select * from Cart;";
+                    SqlCommand cmd = new SqlCommand(query, this.connection);
+                    this.connection.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            cart.Add(new CartModle
+                            {
+                                CartID = (int)dr["CartID"],
+                                UserID = (int)dr["UserID"],
+                                BookName = (string)dr["BookName"],
+                                BookQuantity = (string)dr["BookQuantity"],
+                                BookPrice = (string)dr["BookPrice"]
+                              
+                            });
+                        }
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("No data found");
+                    }
+                }
+                connection.Close();
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine(e.Message);
+            }
+            return cart;
 
+        }
     }
 }

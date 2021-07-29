@@ -44,11 +44,11 @@ namespace RepositoryLayer.Service
             }
             return false;
         }
-        public void GetAllBooks()
+        public IEnumerable<Books> GetAllBooks()
         {
+            List<Books> book = new List<Books>();
             try
             {
-                Books book = new Books();
                 using (this.connection)
                 {
                     string query = @"Select * from Books;";
@@ -59,28 +59,31 @@ namespace RepositoryLayer.Service
                     {
                         while (dr.Read())
                         {
-                            book.BookName = dr.GetString(1);
-                            book.BookAurthor = dr.GetString(2);
-                            book.BookCategory = dr.GetString(3);
-                            book.BookLanguage = dr.GetString(4);
-                           
+                            book.Add(new Books
+                            {
+                                BookID = (int)dr["BookID"],
+                                BookName = (string)dr["bookName"],
+                                BookAurthor = (string)dr["BookAurthor"],
+                                BookCategory = (string)dr["BookCategory"],
+                                BookLanguage = (string)dr["BookLanguage"],
+                                BookQuantity = (int)dr["BookQuantity"]
+                            }); 
                         }
                     }
                     else
                     {
                         System.Console.WriteLine("No data found");
                     }
-
                 }
-              
+                connection.Close();
             }
             catch (Exception e)
             {
                 System.Console.WriteLine(e.Message);
             }
-         
-        }
+            return book;
 
+        }
         public bool DeleteBook(Books id)
         {
             try
@@ -111,7 +114,6 @@ namespace RepositoryLayer.Service
             }
             return false;
         }
-
         public bool UpdateBook(Books modle)
         {
             try
@@ -145,7 +147,7 @@ namespace RepositoryLayer.Service
                 this.connection.Close();
             }
             return false;
-        }
+        }   
 
-    }
+   }
 }

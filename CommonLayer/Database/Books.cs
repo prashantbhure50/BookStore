@@ -13,9 +13,5 @@ namespace CommonLayer.Database
         public string BookLanguage { get; set; }
         public int BookQuantity { get; set; }
 
-        public static void ToList()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -32,6 +32,12 @@ namespace Bookstore.Controllers
                 return this.BadRequest(new { success = false, message = e.Message });
             }
         }
+        [HttpGet("Get")]
+        public IActionResult Get()
+        {
+            IEnumerable<WishListModle> note = this.wishListBl.Get();
+            return Ok(note);
+        }
         [HttpDelete("RemoveWishList")]
         public IActionResult RemoveFromWishList(WishListModle id)
         {

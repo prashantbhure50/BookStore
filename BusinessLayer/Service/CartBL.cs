@@ -26,5 +26,9 @@ namespace BusinessLayer.Service
         {
             return this.cartRl.UpdateCart(cart);
         }
+        public IEnumerable<CartModle> GetCart()
+        {
+            return this.cartRl.GetCart();
+        }
     }
 }

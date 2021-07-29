@@ -8,7 +8,7 @@ namespace RepositoryLayer.Interface
    public interface IBookRL
     {
         bool AddBooks(Books user);
-        public void GetAllBooks();
+        IEnumerable<Books> GetAllBooks();
         bool DeleteBook(Books id);
         bool UpdateBook(Books book);
     }

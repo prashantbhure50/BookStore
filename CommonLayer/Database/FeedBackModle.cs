@@ -7,6 +7,7 @@ namespace CommonLayer.Database
     public class FeedBackModle
     {
         public int UserID { get; set; }
+        public int BookID { get; set; }
         public string BookName { get; set; }
         public int Rating { get; set; }
         public string Comments { get; set; }

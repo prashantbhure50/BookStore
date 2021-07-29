@@ -104,5 +104,43 @@ namespace RepositoryLayer.Service
             }
             return false;
         }
+        public IEnumerable<WishListModle> Get()
+        {
+            List<WishListModle> wish = new List<WishListModle>();
+            try
+            {
+                using (this.connection)
+                {
+                    string query = @"Select * from WishList;";
+                    SqlCommand cmd = new SqlCommand(query, this.connection);
+                    this.connection.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            wish.Add(new WishListModle
+                            {
+                                CartID = (int)dr["CartID"],
+                                UserID = (int)dr["UserID"],
+                                BookName = (string)dr["BookName"],
+                                BookPrice = (string)dr["BookPrice"],
+                            });
+                        }
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("No data found");
+                    }
+                }
+                connection.Close();
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine(e.Message);
+            }
+            return wish;
+
+        }
     }
 }

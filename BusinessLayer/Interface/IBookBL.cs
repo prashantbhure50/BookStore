@@ -8,7 +8,7 @@ namespace BusinessLayer.Interface
     public interface IBookBL
     {
         bool AddBooks(Books user);
-        public void GetAllBooks();
+        IEnumerable<Books> GetAllBooks();
         bool DeleteBook(Books id);
         bool UpdateBook(Books book);
     }

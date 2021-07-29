@@ -127,5 +127,44 @@ namespace RepositoryLayer.Service
             }
             return false;
         }
+        public IEnumerable<OrderModle> Get()
+        {
+            List<OrderModle> FeedBackModle = new List<OrderModle>();
+            try
+            {
+                using (this.connection)
+                {
+                    string query = @"Select * from Orders;";
+                    SqlCommand cmd = new SqlCommand(query, this.connection);
+                    this.connection.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            FeedBackModle.Add(new OrderModle
+                            {
+                                OrderID = (int)dr["OrderID"],
+                                UserID = (int)dr["UserID"],
+                                BookName = (string)dr["BookName"],
+                                BookQuantity = (int)dr["BookQuantity"],
+                                BookPrice = (string)dr["BookPrice"]
+                            });
+                        }
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("No data found");
+                    }
+                }
+                connection.Close();
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine(e.Message);
+            }
+            return FeedBackModle;
+
+        }
     }
 }

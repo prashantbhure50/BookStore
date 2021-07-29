@@ -21,6 +21,7 @@ namespace RepositoryLayer.Service
                     SqlCommand command = new SqlCommand("AddFeedBack", this.connection);
                     command.CommandType = System.Data.CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@UserID", model.UserID);
+                    command.Parameters.AddWithValue("@BookID", model.BookID);
                     command.Parameters.AddWithValue("@BookName", model.BookName);
                     command.Parameters.AddWithValue("@Rating", model.Rating);
                     command.Parameters.AddWithValue("@Comments", model.Comments);
@@ -104,6 +105,45 @@ namespace RepositoryLayer.Service
                 this.connection.Close();
             }
             return false;
+        }
+        public IEnumerable<FeedBackModle> Get()
+        {
+            List<FeedBackModle> FeedBackModle = new List<FeedBackModle>();
+            try
+            {
+                using (this.connection)
+                {
+                    string query = @"Select * from Books;";
+                    SqlCommand cmd = new SqlCommand(query, this.connection);
+                    this.connection.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
+                    {
+                        while (dr.Read())
+                        {
+                            FeedBackModle.Add(new FeedBackModle
+                            {
+                                UserID = (int)dr["UserID"],
+                                BookID = (int)dr["BookID"],
+                                BookName = (string)dr["BookName"],
+                                Rating = (int)dr["Rating"],
+                                Comments = (string)dr["Comments"]
+                            });
+                        }
+                    }
+                    else
+                    {
+                        System.Console.WriteLine("No data found");
+                    }
+                }
+                connection.Close();
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine(e.Message);
+            }
+            return FeedBackModle;
+
         }
     }
 }

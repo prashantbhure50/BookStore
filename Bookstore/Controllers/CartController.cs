@@ -48,6 +48,12 @@ namespace Bookstore.Controllers
                 return BadRequest(new { success = false, message = "Book Is Not In List" });
             }
         }
+        [HttpGet("GetCart")]
+        public IActionResult GetCart()
+        {
+            IEnumerable<CartModle> note = this.cartBl.GetCart();
+            return Ok(note);
+        }
         [HttpPut("UpdateCart")]
         public ActionResult UpdateCart(CartModle cart)
         {

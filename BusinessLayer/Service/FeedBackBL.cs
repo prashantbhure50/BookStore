@@ -26,5 +26,9 @@ namespace BusinessLayer.Service
         {
             return this.feedBackRl.UpdateFeedBack(modle);
         }
+        public IEnumerable<FeedBackModle> Get()
+        {
+            return this.feedBackRl.Get();
+        }
     }
 }

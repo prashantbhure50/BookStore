@@ -10,5 +10,6 @@ namespace BusinessLayer.Interface
         public bool AddFeedBack(FeedBackModle cart);
         public bool DeleteFeedBack(FeedBackModle id);
         public bool UpdateFeedBack(FeedBackModle cart);
+        IEnumerable<FeedBackModle> Get();
     }
 }

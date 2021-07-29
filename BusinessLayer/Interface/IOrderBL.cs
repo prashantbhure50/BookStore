@@ -10,5 +10,6 @@ namespace BusinessLayer.Interface
         public bool AddToOrder(OrderModle order);
         public bool DeleteOrder(OrderModle order);
         public bool UpdateOrder(OrderModle order);
+        IEnumerable<OrderModle> Get();
     }
 }

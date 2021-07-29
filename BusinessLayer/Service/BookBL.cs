@@ -18,9 +18,9 @@ namespace BusinessLayer.Service
         {
             return this.bookRl.AddBooks(book);
         }
-        public void GetAllBooks()
+        public IEnumerable<Books> GetAllBooks()
         {
-            this.bookRl.GetAllBooks();
+            return this.bookRl.GetAllBooks();
         }
         public bool DeleteBook(Books id)
         {

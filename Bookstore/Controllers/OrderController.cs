@@ -60,5 +60,11 @@ namespace Bookstore.Controllers
                 return BadRequest(new { success = false, message = "Cart is Null" });
             }
         }
+        [HttpGet("Get")]
+        public IActionResult Get()
+        {
+            IEnumerable<OrderModle> note = this.orderBl.Get();
+            return Ok(note);
+        }
     }
 }

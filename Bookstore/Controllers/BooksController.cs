@@ -20,6 +20,7 @@ namespace Bookstore.Controllers
             this.BookBl = BookBl;
         }
         [HttpPost]
+        //[Authorize(Roles = Role.Admin)]
         public ActionResult AddBooks(Books book)
         {
             try
@@ -34,10 +35,10 @@ namespace Bookstore.Controllers
             }
           }
         [HttpGet("GetAllBooks")]
-        public ActionResult GetAllBooks()
+        public IActionResult GetAllBooks()
         {
-            this.BookBl.GetAllBooks();
-            return this.Ok();
+            IEnumerable<Books> note = this.BookBl.GetAllBooks();
+            return Ok(note);
         }
         [AllowAnonymous]
         [HttpDelete("DeleteBook")]
