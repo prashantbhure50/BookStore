@@ -27,7 +27,9 @@ namespace RepositoryLayer.Service
                     command.Parameters.AddWithValue("@BookName", model.BookName);
                     command.Parameters.AddWithValue("@BookQuantity", model.BookQuantity);
                     command.Parameters.AddWithValue("@BookPrice", model.BookPrice);
-                  
+                    command.Parameters.AddWithValue("@BookPrice", model.AddressDetail);
+                    command.Parameters.AddWithValue("@BookID", model.BookID);
+
                     string query = @"Select * from Books;";
                     SqlCommand cmd = new SqlCommand(query, this.connection);
                     SqlDataReader dr = cmd.ExecuteReader();

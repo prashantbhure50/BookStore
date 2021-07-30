@@ -11,5 +11,7 @@ namespace CommonLayer.Database
         public string BookName { get; set; }
         public int BookQuantity { get; set; }
         public string BookPrice { get; set; }
+        public string AddressDetail { get; set; }
+        public int BookID { get; set; }
     }
 }

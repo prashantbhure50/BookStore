@@ -22,8 +22,10 @@ namespace RepositoryLayer.Service
                     command.CommandType = System.Data.CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@CartID", model.CartID);
                     command.Parameters.AddWithValue("@UserID", model.UserID);
+                    command.Parameters.AddWithValue("@BookName", model.BookName);
                     command.Parameters.AddWithValue("@BookQuantity", model.BookQuantity);
                     command.Parameters.AddWithValue("@BookPrice", model.BookPrice);
+                    command.Parameters.AddWithValue("@BookID", model.BookID);
                     var result = command.ExecuteNonQuery();
                     this.connection.Close();
                     if (result != 0)
@@ -125,8 +127,9 @@ namespace RepositoryLayer.Service
                                 UserID = (int)dr["UserID"],
                                 BookName = (string)dr["BookName"],
                                 BookQuantity = (string)dr["BookQuantity"],
-                                BookPrice = (string)dr["BookPrice"]
-                              
+                                BookPrice = (string)dr["BookPrice"],
+                                BookID = (int)dr["BookID"]
+
                             });
                         }
                     }

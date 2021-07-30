@@ -24,6 +24,7 @@ namespace RepositoryLayer.Service
                     command.Parameters.AddWithValue("@UserID", model.UserID);
                     command.Parameters.AddWithValue("@BookName", model.BookName);
                     command.Parameters.AddWithValue("@BookPrice", model.BookPrice);
+                    command.Parameters.AddWithValue("@BookID", model.BookID);
                     var result = command.ExecuteNonQuery();
                     this.connection.Close();
                     if (result != 0)
