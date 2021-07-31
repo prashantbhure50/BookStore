@@ -33,9 +33,9 @@ namespace Bookstore.Controllers
             }
         }
         [HttpGet("Get")]
-        public IActionResult Get()
+        public IActionResult Get(int id)
         {
-            IEnumerable<WishListModle> note = this.wishListBl.Get();
+            IEnumerable<WishListModle> note = this.wishListBl.Get(id);
             return Ok(note);
         }
         [HttpDelete("RemoveWishList")]

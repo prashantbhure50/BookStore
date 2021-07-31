@@ -26,9 +26,9 @@ namespace BusinessLayer.Service
         {
             return this.wishListRl.UpdateWishList(modle);
         }
-        public IEnumerable<WishListModle> Get()
+        public IEnumerable<WishListModle> Get(int id)
         {
-            return this.wishListRl.Get();
+            return this.wishListRl.Get(id);
         }
     }
 }

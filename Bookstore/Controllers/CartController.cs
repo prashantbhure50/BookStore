@@ -49,9 +49,9 @@ namespace Bookstore.Controllers
             }
         }
         [HttpGet("GetCart")]
-        public IActionResult GetCart()
+        public IActionResult GetCart(int id)
         {
-            IEnumerable<CartModle> note = this.cartBl.GetCart();
+            IEnumerable<CartModle> note = this.cartBl.GetCart(id);
             return Ok(note);
         }
         [HttpPut("UpdateCart")]

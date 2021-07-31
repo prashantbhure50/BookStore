@@ -10,8 +10,12 @@ namespace CommonLayer.Database
         public int UserID { get; set; }
         public int BookID { get; set; }
         public string BookName { get; set; }
-        public string BookQuantity { get; set; }
+        public int BookQuantity { get; set; }
         public string BookPrice { get; set; }
-     
-   }
+        public string BookAurthor { get; set; }
+        public string BookCategory { get; set; }
+        public string BookLanguage { get; set; }
+  
+
+    }
 }

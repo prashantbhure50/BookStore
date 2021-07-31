@@ -19,11 +19,8 @@ namespace RepositoryLayer.Service
                 using (this.connection)
                 {
                     SqlCommand command = new SqlCommand("AddToWishList", this.connection);
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@CartID", model.CartID);
-                    command.Parameters.AddWithValue("@UserID", model.UserID);
-                    command.Parameters.AddWithValue("@BookName", model.BookName);
-                    command.Parameters.AddWithValue("@BookPrice", model.BookPrice);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;     
+                    command.Parameters.AddWithValue("@UserID", model.UserID);              
                     command.Parameters.AddWithValue("@BookID", model.BookID);
                     var result = command.ExecuteNonQuery();
                     this.connection.Close();
@@ -54,7 +51,7 @@ namespace RepositoryLayer.Service
                 {
                     SqlCommand command = new SqlCommand("RemoveWishList", this.connection);
                     command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@CartID", id.CartID);
+                    command.Parameters.AddWithValue("@UserID", id.UserID);
                     var result = command.ExecuteNonQuery();
                     this.connection.Close();
                     if (result != 0)
@@ -105,27 +102,28 @@ namespace RepositoryLayer.Service
             }
             return false;
         }
-        public IEnumerable<WishListModle> Get()
+        public IEnumerable<WishListModle> Get(int id)
         {
             List<WishListModle> wish = new List<WishListModle>();
             try
             {
                 using (this.connection)
                 {
-                    string query = @"Select * from WishList;";
-                    SqlCommand cmd = new SqlCommand(query, this.connection);
+                    SqlCommand command = new SqlCommand("GetWishList", this.connection);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@UserID", id);
                     this.connection.Open();
-                    SqlDataReader dr = cmd.ExecuteReader();
+                    SqlDataReader dr = command.ExecuteReader();
                     if (dr.HasRows)
                     {
                         while (dr.Read())
                         {
                             wish.Add(new WishListModle
                             {
-                                CartID = (int)dr["CartID"],
-                                UserID = (int)dr["UserID"],
                                 BookName = (string)dr["BookName"],
-                                BookPrice = (string)dr["BookPrice"],
+                                BookAurthor = (string)dr["BookAurthor"],
+                                BookCategory = (string)dr["BookCategory"],
+                                BookLanguage = (string)dr["BookLanguage"]
                             });
                         }
                     }

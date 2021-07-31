@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BusinessLayer.Interface;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,5 +12,12 @@ namespace Bookstore.Controllers
     [ApiController]
     public class AddressController : ControllerBase
     {
+        IAddressBL addressBl;
+        public AddressController(IAddressBL addressBl)
+        {
+            this.addressBl = addressBl;
+        }
+
+
     }
 }

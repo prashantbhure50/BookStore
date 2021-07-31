@@ -20,11 +20,8 @@ namespace RepositoryLayer.Service
                 {
                     SqlCommand command = new SqlCommand("AddToCart", this.connection);
                     command.CommandType = System.Data.CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@CartID", model.CartID);
                     command.Parameters.AddWithValue("@UserID", model.UserID);
-                    command.Parameters.AddWithValue("@BookName", model.BookName);
                     command.Parameters.AddWithValue("@BookQuantity", model.BookQuantity);
-                    command.Parameters.AddWithValue("@BookPrice", model.BookPrice);
                     command.Parameters.AddWithValue("@BookID", model.BookID);
                     var result = command.ExecuteNonQuery();
                     this.connection.Close();
@@ -106,30 +103,31 @@ namespace RepositoryLayer.Service
             }
             return false;
         }
-        public IEnumerable<CartModle> GetCart()
+        public IEnumerable<CartModle> GetCart(int UserID)
         {
             List<CartModle> cart = new List<CartModle>();
             try
             {
                 using (this.connection)
                 {
-                    string query = @"Select * from Cart;";
-                    SqlCommand cmd = new SqlCommand(query, this.connection);
+                    
+                    SqlCommand command = new SqlCommand("GetCart", this.connection);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@UserID", UserID);
                     this.connection.Open();
-                    SqlDataReader dr = cmd.ExecuteReader();
+                    SqlDataReader dr = command.ExecuteReader();
                     if (dr.HasRows)
                     {
                         while (dr.Read())
                         {
                             cart.Add(new CartModle
                             {
-                                CartID = (int)dr["CartID"],
-                                UserID = (int)dr["UserID"],
-                                BookName = (string)dr["BookName"],
-                                BookQuantity = (string)dr["BookQuantity"],
-                                BookPrice = (string)dr["BookPrice"],
-                                BookID = (int)dr["BookID"]
-
+                              
+                                BookName = (string)dr["BookName"],                          
+                                BookAurthor = (string)dr["BookAurthor"],
+                                BookCategory = (string)dr["BookCategory"],
+                                BookLanguage = (string)dr["BookLanguage"],
+                                BookQuantity = (int)dr["BookQuantity"]                        
                             });
                         }
                     }

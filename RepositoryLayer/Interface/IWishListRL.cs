@@ -10,6 +10,6 @@ namespace RepositoryLayer.Interface
         public bool AddToWishList(WishListModle list);
         public bool RemoveFromWishList(WishListModle id);
         public bool UpdateWishList(WishListModle modle);
-        IEnumerable<WishListModle> Get();
+        IEnumerable<WishListModle> Get(int id);
     }
 }

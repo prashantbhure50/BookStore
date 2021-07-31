@@ -16,46 +16,19 @@ namespace RepositoryLayer.Service
         {
             try
             {
-                int res = 0;
-                bool final = false;
                 this.connection.Open();
                 using (this.connection)
                 {
                     SqlCommand command = new SqlCommand("AddToOrder", this.connection);
                     command.CommandType = System.Data.CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@UserID", model.UserID);
-                    command.Parameters.AddWithValue("@BookName", model.BookName);
-                    command.Parameters.AddWithValue("@BookQuantity", model.BookQuantity);
-                    command.Parameters.AddWithValue("@BookPrice", model.BookPrice);
-                    command.Parameters.AddWithValue("@BookPrice", model.AddressDetail);
-                    command.Parameters.AddWithValue("@BookID", model.BookID);
-
-                    string query = @"Select * from Books;";
-                    SqlCommand cmd = new SqlCommand(query, this.connection);
-                    SqlDataReader dr = cmd.ExecuteReader();
-                    if (dr.HasRows)
-                    {
-                        while (dr.Read())
-                        {
-                            res = dr.GetInt32(5);
-                     
-                            if (res <= model.BookQuantity)
-                            {
-                                return false;
-                            }
-
-                        }
-                    }
-                    else
-                    {
-                        System.Console.WriteLine("No data found");
-                    }
-                    this.connection.Close();
-                    this.connection.Open();
                     var result = command.ExecuteNonQuery();
-        
-            
-                    return false;
+                    this.connection.Close();
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+                    return false;           
                 }
             }
             catch (Exception e)
@@ -129,17 +102,18 @@ namespace RepositoryLayer.Service
             }
             return false;
         }
-        public IEnumerable<OrderModle> Get()
+        public IEnumerable<OrderModle> Get(int UserID)
         {
             List<OrderModle> FeedBackModle = new List<OrderModle>();
             try
             {
                 using (this.connection)
                 {
-                    string query = @"Select * from Orders;";
-                    SqlCommand cmd = new SqlCommand(query, this.connection);
+                    SqlCommand command = new SqlCommand("GetOrder", this.connection);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@UserID", UserID);
                     this.connection.Open();
-                    SqlDataReader dr = cmd.ExecuteReader();
+                    SqlDataReader dr = command.ExecuteReader();
                     if (dr.HasRows)
                     {
                         while (dr.Read())
@@ -147,10 +121,19 @@ namespace RepositoryLayer.Service
                             FeedBackModle.Add(new OrderModle
                             {
                                 OrderID = (int)dr["OrderID"],
-                                UserID = (int)dr["UserID"],
+                                BookID = (int)dr["BookID"],
                                 BookName = (string)dr["BookName"],
+                                BookAurthor = (string)dr["BookAurthor"],
+                                BookCategory = (string)dr["BookCategory"],
+                                BookLanguage = (string)dr["BookLanguage"],
                                 BookQuantity = (int)dr["BookQuantity"],
-                                BookPrice = (string)dr["BookPrice"]
+                                FirstName = (string)dr["FirstName"],
+                                LastName = (string)dr["LastName"],
+                                City = (string)dr["City"],
+                                Address = (string)dr["Address"],
+                                Pincode = (string)dr["Pincode"],
+                                PhoneNo = (string)dr["PhoneNo"],
+                                Email = (string)dr["Email"]
                             });
                         }
                     }

@@ -26,9 +26,9 @@ namespace BusinessLayer.Service
         {
             return this.orderRl.UpdateOrder(order);
         }
-        public IEnumerable<OrderModle> Get()
+        public IEnumerable<OrderModle> Get(int id)
         {
-            return this.orderRl.Get();
+            return this.orderRl.Get(id);
         }
     }
 }

@@ -10,6 +10,6 @@ namespace RepositoryLayer.Interface
         public bool AddToOrder(OrderModle cart);
         public bool DeleteOrder(OrderModle id);
         public bool UpdateOrder(OrderModle cart);
-        IEnumerable<OrderModle> Get();
+        IEnumerable<OrderModle> Get(int id);
     }
 }

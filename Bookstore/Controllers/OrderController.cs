@@ -61,9 +61,9 @@ namespace Bookstore.Controllers
             }
         }
         [HttpGet("Get")]
-        public IActionResult Get()
+        public IActionResult Get(int id)
         {
-            IEnumerable<OrderModle> note = this.orderBl.Get();
+            IEnumerable<OrderModle> note = this.orderBl.Get(id);
             return Ok(note);
         }
     }
