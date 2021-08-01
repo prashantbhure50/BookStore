@@ -10,12 +10,16 @@ namespace RepositoryLayer.Service
     public class CartRL: ICartRL
     {
         public static string connectionString = @"Data Source=(localdb)\ProjectsV13;Initial Catalog=Bookstore;Integrated Security=True";
-        SqlConnection connection = new SqlConnection(connectionString);
+         SqlConnection connection = new SqlConnection(connectionString);
         public bool AddToCart(CartModle model)
         {
             try
             {
+                int res = 0;
+               
                 this.connection.Open();
+                //SqlTransaction transaction;
+                //transaction = connection.BeginTransaction("Quantity  Check Transaction");
                 using (this.connection)
                 {
                     SqlCommand command = new SqlCommand("AddToCart", this.connection);
@@ -23,7 +27,13 @@ namespace RepositoryLayer.Service
                     command.Parameters.AddWithValue("@UserID", model.UserID);
                     command.Parameters.AddWithValue("@BookQuantity", model.BookQuantity);
                     command.Parameters.AddWithValue("@BookID", model.BookID);
+                   
+                    }
+                  
+                    this.connection.Close();
+                    this.connection.Open();
                     var result = command.ExecuteNonQuery();
+                    
                     this.connection.Close();
                     if (result != 0)
                     {
